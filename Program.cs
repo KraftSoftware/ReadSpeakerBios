@@ -17,14 +17,13 @@ namespace Read_Speaker_Bios
 
         static void Main(string[] args)
         {
-            //CallTwitter("test two");
+            //CallTwitter("test tweet");
 
             List<Peep> presenters = GetPeopleAndSessions();
-            SendPreEventTweets(presenters);
-
-            //SendPostEventThankYous(presenters);
+            //SendPreEventTweets(presenters, 15);
+            SendPostEventThankYous(presenters, 2);
         }
-        private static void SendPreEventTweets(List<Peep> presenters)
+        private static void SendPreEventTweets(List<Peep> presenters, int minutesBetweenTweets)
         {
             foreach (var presenter in presenters)
             {
@@ -33,21 +32,19 @@ namespace Read_Speaker_Bios
                     string tweet = $"Come to #kcdc2019 to hear {presenter.FullName} {presenter.Twitter}speak about \"{session}\"";
                     Debug.WriteLine(tweet);
                     CallTwitter(tweet);
-                    System.Threading.Thread.Sleep(1000 * 300);
+                    System.Threading.Thread.Sleep(1000 * 60 * minutesBetweenTweets);
                 }
             }
         }
 
-        private static void SendPostEventThankYous(List<Peep> presenters)
+        private static void SendPostEventThankYous(List<Peep> presenters, int minutesBetweenTweets)
         {
             foreach (var presenter in presenters)
             {
-                foreach (var session in presenter.Sessions)
-                {
-                    string tweet = $"Thank you {presenter.FullName}{presenter.Twitter}for speaking at #kcdc2019 about \"{session}\"";
-                    Debug.WriteLine(tweet);
-                    CallTwitter(tweet);
-                }
+                string tweet = $"Thank you {presenter.FullName} {presenter.Twitter}for speaking at #kcdc2019";
+                Debug.WriteLine(tweet);
+                CallTwitter(tweet);
+                System.Threading.Thread.Sleep(1000 * 60 * minutesBetweenTweets);
             }
         }
         private static string GetTwitterHandleFromTwitterURL(string twitterURL)
